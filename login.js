@@ -1,0 +1,47 @@
+import { auth, signInWithEmailAndPassword, onAuthStateChanged,  signOut } from "./config.js";
+
+window.signIn = (event) => {
+    event.preventDefault();
+
+    let email = document.getElementById("email");
+let password = document.getElementById("password");
+
+       signInWithEmailAndPassword(auth, email.value, password.value)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log("user" , user)
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorMessage)
+  });
+};
+
+// Already logged-in users ko signup/login se dashboard bhejo
+function getUser(){
+onAuthStateChanged(auth, (user) => {
+     if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/auth.user
+    const uid = user.uid;
+    console.log("User Login ha abhi" , user)
+    window.location.href = "./dashboard.html"
+    // ...
+  } else {
+    // User is signed out
+    console.log("User Login nhi ha")
+    // ...
+  }
+});
+}
+
+getUser()
+
+export{
+    getUser
+}
+
+
